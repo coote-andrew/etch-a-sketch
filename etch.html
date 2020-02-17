@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<style>
+    :root{
+        --main-size: 5em;
+        --width-and-height: 4;
+    }
+
+    .tile{
+        border: 1px solid black;
+    }
+    #canvas{
+        display:grid;
+
+    }
+
+    .hovered {
+
+        background-color: black;
+    }
+
+
+</style>
+<body>
+<h1>Etch-a-Sketch</h1>
+<button id="resetResize">Reset and resize</button>
+<div id="canvas"></div>
+
+
+</body>
+<script>
+    const canvas = document.querySelector('#canvas');
+    const btnReset = document.querySelector('#resetResize');
+    function createCanvas(width) {
+        let child = canvas.lastElementChild;
+        while (child) {
+            canvas.removeChild(child);
+            child = canvas.lastElementChild
+        }
+        for(i=0;i<(width*width); i++){
+            
+            const divCreate = document.createElement('div');
+            divCreate.setAttribute('id',`div${i}`)
+            divCreate.classList.add(`tile`);
+            canvas.appendChild(divCreate);
+        }
+        canvas.style.cssText = `grid-template-columns: repeat(${width}, 20px)`;
+        canvas.style.cssText = `display:grid;
+        grid-template-rows: repeat(${width}, ${960/width}px);
+        grid-template-columns: repeat(${width}, ${960/width}px);`;
+        const tiles = document.querySelectorAll('.tile');
+        tiles.forEach((tile) => {
+        tile.addEventListener('mouseenter', (e) =>{
+            //tile.classList.add('hovered');
+            let randomR = Math.floor(Math.random()*256);
+            let randomG = Math.floor(Math.random()*256);
+            let randomB = Math.floor(Math.random()*256);
+            tile.style.cssText = `background-color: rgb(${randomR},${randomG},${randomB});`
+        })
+        })
+
+
+    }
+    
+    btnReset.addEventListener('click', function (e){
+        console.log(e);
+        let sizing = prompt('what size would you like?');
+        while (isNaN(sizing)){
+            sizing = prompt('what size would you like?');
+        }
+        createCanvas(sizing);
+    })
+
+    createCanvas(4);
+
+
+
+
+
+    
+
+    /*
+            grid-template-columns: repeat(var(--width-and-height), var(--main-size));
+        grid-template-rows: repeat(var(--width-and-height), var(--main-size));
+    */
+
+</script>
